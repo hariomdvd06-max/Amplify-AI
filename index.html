@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amplify AI | Premium Social Media Automation</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Outfit & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#6366f1", // Indigo
+                        secondary: "#d946ef", // Fuchsia
+                        accent: "#06b6d4", // Cyan
+                        dark: "#0f172a",
+                        darker: "#020617",
+                        surface: "#1e293b",
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Extra visual sugar in the HTML for speed */
+        .mesh-bg {
+            background-color: #020617;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+        }
+    </style>
+</head>
+<body class="bg-darker text-slate-100 font-sans antialiased overflow-x-hidden hidden">
+
+    <!-- OVERLAYS & BACKGROUNDS -->
+    <div class="fixed inset-0 -z-10 mesh-bg opacity-40"></div>
+    <div class="fixed inset-0 -z-10 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] animate-pulse"></div>
+        <div class="absolute bottom-[10%] right-[-10%] w-[30%] h-[30%] bg-secondary/10 rounded-full blur-[100px]"></div>
+    </div>
+
+    <!-- LANDING PAGE -->
+    <div id="page-landing" class="page min-h-screen flex flex-col">
+        <!-- Floating Nav -->
+        <nav class="sticky top-6 z-[100] mx-auto w-[90%] max-w-6xl glass border border-white/10 rounded-2xl flex items-center justify-between px-6 py-4 shadow-2xl">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="navigate('landing')">
+                <div class="relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-lg blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+                    <div class="relative p-2 bg-darker rounded-lg border border-white/10">
+                        <i data-lucide="wand-2" class="text-primary w-6 h-6"></i>
+                    </div>
+                </div>
+                <span class="text-2xl font-display font-bold text-white tracking-tight">Amplify<span class="text-primary">AI</span></span>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+                <a href="#features" class="hover:text-white transition-colors">Features</a>
+                <a href="#about" class="hover:text-white transition-colors">How it Works</a>
+                <a href="#pricing" class="hover:text-white transition-colors">Pricing</a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button onclick="navigate('login')" class="px-4 py-2 text-sm font-semibold text-slate-300 hover:text-white">Login</button>
+                <button onclick="navigate('register')" class="btn-premium">Get Started</button>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <main class="flex-1 flex flex-col items-center justify-center pt-24 pb-32 px-4 text-center relative z-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/5 text-primary text-xs font-bold uppercase tracking-widest mb-8 animate-bounce">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                </span>
+                Next-Gen Automation
+            </div>
+            
+            <h1 class="text-6xl md:text-8xl font-display font-extrabold text-white mb-8 tracking-tighter leading-[1.1]">
+                Master Social Media <br />
+                <span class="gradient-text">In Seconds.</span>
+            </h1>
+            
+            <p class="text-xl text-slate-400 max-w-2xl mb-12 leading-relaxed font-light">
+                Amplify AI creates viral-ready content, optimizes your posting schedule, and analyzes trends automatically. Zero code. Zero effort. <span class="text-white font-medium">Infinite growth.</span>
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 items-center">
+                <button onclick="navigate('register')" class="btn-premium text-lg px-10 py-5 flex items-center gap-3 group">
+                    Build Your Brand Free
+                    <i data-lucide="sparkles" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
+                </button>
+                <button class="px-8 py-4 text-slate-400 hover:text-white font-medium flex items-center gap-2 transition-all">
+                    <i data-lucide="play-circle" class="w-6 h-6"></i>
+                    Watch Demo
+                </button>
+            </div>
+
+            <!-- Dashboard Mockup Preview -->
+            <div class="mt-20 w-full max-w-5xl group relative">
+                <div class="absolute -inset-1 bg-gradient-to-r from-primary/50 to-secondary/50 rounded-3xl blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
+                <div class="relative glass border border-white/10 rounded-3xl overflow-hidden shadow-2xl p-2">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200" alt="Dashboard Preview" class="rounded-2xl opacity-80 grayscale group-hover:grayscale-0 transition-all duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-darker via-transparent to-transparent"></div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="py-12 border-t border-white/5 text-center">
+            <p class="text-slate-500 text-sm">&copy; 2026 Amplify AI. High Performance Social Media Engine.</p>
+        </footer>
+    </div>
+
+    <!-- AUTH PAGES (Single view with toggle) -->
+    <div id="page-auth" class="page min-h-screen flex items-center justify-center p-4 relative hidden">
+        <div class="w-full max-w-md relative z-10">
+            <!-- Back button -->
+            <button onclick="navigate('landing')" class="absolute -top-16 left-0 text-slate-500 hover:text-white flex items-center gap-2 transition-colors">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Home
+            </button>
+
+            <div class="text-center mb-8">
+                <div class="inline-flex p-3 bg-primary/10 rounded-2xl border border-primary/20 mb-6">
+                    <i data-lucide="rocket" class="w-10 h-10 text-primary"></i>
+                </div>
+                <h2 id="auth-title" class="text-3xl font-display font-bold text-white mb-2">Join the Future</h2>
+                <p class="text-slate-400">Unlock your AI-powered social media workspace</p>
+            </div>
+
+            <div class="glass p-8 rounded-3xl border border-white/10 shadow-2xl">
+                <form id="auth-form" onsubmit="handleAuth(event)" class="space-y-6">
+                    <div id="name-field-container" class="hidden">
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Username</label>
+                        <div class="relative">
+                            <i data-lucide="user" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500"></i>
+                            <input type="text" id="auth-name" class="input-premium pl-11" placeholder="Enter your name">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Work Email</label>
+                        <div class="relative">
+                            <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500"></i>
+                            <input type="email" required id="auth-email" class="input-premium pl-11" placeholder="name@company.com" value="demo@amplify.ai">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Secure Password</label>
+                        <div class="relative">
+                            <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500"></i>
+                            <input type="password" required id="auth-password" class="input-premium pl-11" placeholder="••••••••" value="demo123">
+                        </div>
+                    </div>
+
+                    <button type="submit" id="auth-submit-btn" class="w-full btn-premium py-4 text-base font-bold shadow-xl shadow-primary/20">
+                        Launch Dashboard
+                    </button>
+                </form>
+
+                <div class="mt-8 text-center">
+                    <p class="text-sm text-slate-500">
+                        <span id="auth-switch-text">New here?</span>
+                        <button onclick="toggleAuthMode()" id="auth-switch-link" class="text-primary font-bold hover:underline ml-1">Create Account</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- APP CORE -->
+    <div id="page-app" class="page min-h-screen flex hidden">
+        <!-- Sidebar -->
+        <aside class="w-72 bg-darker/50 backdrop-blur-xl border-r border-white/5 hidden lg:flex flex-col">
+            <div class="p-8 pb-4">
+                <div class="flex items-center gap-3 mb-10 cursor-pointer" onclick="navigateApp('dashboard')">
+                    <div class="p-2 bg-primary rounded-xl"><i data-lucide="sparkles" class="w-6 h-6 text-white"></i></div>
+                    <span class="text-2xl font-display font-bold text-white uppercase tracking-tighter">Amplify</span>
+                </div>
+                
+                <nav class="space-y-2" id="sidebar-nav">
+                    <!-- Nav items injected -->
+                </nav>
+            </div>
+
+            <div class="mt-auto p-8 pt-0">
+                <div class="p-4 bg-surface/50 rounded-2xl border border-white/5 mb-6">
+                    <p class="text-xs font-bold text-slate-500 uppercase mb-2">Storage Usage</p>
+                    <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-primary w-[35%] h-full rounded-full"></div>
+                    </div>
+                </div>
+
+                <button onclick="logout()" class="flex items-center gap-3 w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 rounded-xl transition-all">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                    Sign Out
+                </button>
+            </div>
+        </aside>
+
+        <!-- Content Area -->
+        <div class="flex-1 flex flex-col h-screen overflow-hidden">
+            <!-- Header -->
+            <header class="h-20 border-b border-white/5 flex items-center justify-between px-8 bg-darker/20 backdrop-blur-md">
+                <div class="flex items-center gap-4">
+                    <button class="lg:hidden p-2 text-slate-400" onclick="toggleMobileMenu()">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <h2 id="view-title" class="text-xl font-bold text-white">Dashboard</h2>
+                </div>
+                
+                <div class="flex items-center gap-6">
+                    <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-green-500/10 border border-green-500/20 rounded-full">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        <span class="text-xs font-bold text-green-500 uppercase tracking-tighter">AI Node Active</span>
+                    </div>
+                    
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-secondary p-[2px]">
+                            <div class="w-full h-full rounded-full bg-dark flex items-center justify-center text-sm font-bold text-white">
+                                <i data-lucide="user" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Scrollable Area -->
+            <main id="app-content" class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+                <!-- Content injected here -->
+            </main>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-[200] hidden lg:hidden">
+        <div class="absolute inset-0 bg-darker/90 backdrop-blur-sm" onclick="toggleMobileMenu()"></div>
+        <div class="absolute inset-y-0 left-0 w-80 bg-surface border-r border-white/10 p-6 flex flex-col">
+            <div class="flex items-center justify-between mb-10">
+                <span class="text-2xl font-display font-bold text-white">Amplify AI</span>
+                <button onclick="toggleMobileMenu()"><i data-lucide="x" class="text-slate-400"></i></button>
+            </div>
+            <nav class="space-y-4" id="mobile-nav"></nav>
+        </div>
+    </div>
+
+    <!-- TEMPLATES -->
+
+    <!-- Dashboard -->
+    <template id="tmpl-dashboard">
+        <div class="animate-in slide-in-from-bottom-5 duration-700">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-12">
+                <div>
+                    <h3 class="text-3xl font-display font-bold text-white mb-2">Growth Overview</h3>
+                    <p class="text-slate-500">Monitor your social expansion across all connected nodes.</p>
+                </div>
+                <div class="flex gap-3">
+                    <button class="glass px-4 py-2 border border-white/5 rounded-xl text-sm font-medium hover:bg-white/5">Export CSV</button>
+                    <button onclick="navigateApp('campaign')" class="btn-premium px-6 py-2.5 flex items-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i> New Goal
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-12">
+                <div class="stat-card">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-primary/10 rounded-2xl text-primary"><i data-lucide="activity"></i></div>
+                        <span class="text-green-400 text-xs font-bold font-mono">+24.1%</span>
+                    </div>
+                    <p class="text-slate-500 text-sm font-medium uppercase tracking-widest mb-1">Global Interaction</p>
+                    <h4 class="text-3xl font-display font-bold text-white">12.4M</h4>
+                    <div class="mt-4 h-1 w-full bg-slate-800 rounded-full overflow-hidden">
+                        <div class="bg-primary h-full w-[65%]"></div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-secondary/10 rounded-2xl text-secondary"><i data-lucide="share-2"></i></div>
+                        <span class="text-green-400 text-xs font-bold font-mono">+11.5%</span>
+                    </div>
+                    <p class="text-slate-500 text-sm font-medium uppercase tracking-widest mb-1">Viral Velocity</p>
+                    <h4 class="text-3xl font-display font-bold text-white">82.1k</h4>
+                </div>
+
+                <div class="stat-card">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-accent/10 rounded-2xl text-accent"><i data-lucide="users"></i></div>
+                        <span class="text-slate-500 text-xs font-bold font-mono">0.0%</span>
+                    </div>
+                    <p class="text-slate-500 text-sm font-medium uppercase tracking-widest mb-1">Active Nodes</p>
+                    <h4 class="text-3xl font-display font-bold text-white" id="dash-camp-count">0</h4>
+                </div>
+            </div>
+
+            <!-- Charts & Insights -->
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <div class="xl:col-span-2 glass p-8 border border-white/5 rounded-[2.5rem]">
+                    <div class="flex items-center justify-between mb-8">
+                        <h4 class="text-xl font-bold text-white">Engagement Flow</h4>
+                        <select class="bg-darker border border-white/10 px-3 py-1.5 rounded-xl text-sm outline-none">
+                            <option>Last 7 Days</option>
+                            <option>Monthly</option>
+                        </select>
+                    </div>
+                    <div class="h-80 w-full">
+                        <canvas id="analyticsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-6">
+                    <div class="bg-gradient-to-br from-primary to-primary/60 p-8 rounded-[2.5rem] relative overflow-hidden group">
+                        <div class="absolute -right-4 -bottom-4 w-32 h-32 bg-white/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
+                        <h4 class="text-xl font-bold text-white mb-2">AI Optimization</h4>
+                        <p class="text-white/80 text-sm leading-relaxed mb-6">Our neural engine recommends shifting your content focus towards <span class="font-bold">#TechTips</span> tomorrow.</p>
+                        <button class="w-full py-3 bg-white text-primary font-bold rounded-2xl text-sm transition-transform active:scale-95">Apply strategy</button>
+                    </div>
+
+                    <div class="glass p-8 border border-white/10 rounded-[2.5rem]">
+                        <h4 class="text-lg font-bold text-white mb-4">System Health</h4>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-slate-400">API Latency</span>
+                                <span class="text-xs font-mono text-green-400">22ms</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-slate-400">Content Quality</span>
+                                <span class="text-xs font-mono text-primary">98.4%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Generator -->
+    <template id="tmpl-generator">
+        <div class="max-w-5xl mx-auto animate-in fade-in duration-500">
+            <header class="mb-12">
+                <h3 class="text-4xl font-display font-extrabold text-white mb-3">Nebula Engine</h3>
+                <p class="text-slate-500">Input your core concept and let the AI architect your viral content.</p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                <div class="space-y-8">
+                    <div class="glass p-8 rounded-[2rem] border border-white/5 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-4 opacity-10">
+                            <i data-lucide="sparkles" class="w-24 h-24"></i>
+                        </div>
+                        
+                        <form onsubmit="handleGenerate(event)" class="relative z-10 space-y-6">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Topic / Concept</label>
+                                <textarea id="gen-topic" required class="input-premium h-40 pt-4" placeholder="Describe your post idea in detail..."></textarea>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Platform</label>
+                                    <select id="gen-platform" class="input-premium bg-dark cursor-pointer">
+                                        <option>Twitter</option>
+                                        <option>LinkedIn</option>
+                                        <option>Instagram</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Tone</label>
+                                    <select id="gen-tone" class="input-premium bg-dark cursor-pointer">
+                                        <option value="professional">Professional</option>
+                                        <option value="casual">Casual</option>
+                                        <option value="aggressive">High Energy</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button type="submit" id="gen-btn" class="w-full btn-premium py-4 text-lg font-bold">
+                                <i data-lucide="wand-2" class="w-5 h-5 mr-3"></i> Generate Content
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Simulation Output -->
+                <div class="relative group">
+                    <div class="absolute -inset-[1px] bg-gradient-to-r from-primary to-secondary rounded-[2.5rem] blur opacity-20"></div>
+                    <div class="relative glass border border-white/10 rounded-[2.5rem] overflow-hidden min-h-[500px] flex flex-col">
+                        <div class="px-8 py-6 border-b border-white/5 bg-white/5 flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Neural Draft</span>
+                            <div class="flex gap-2">
+                                <span class="w-2 h-2 rounded-full bg-red-400"></span>
+                                <span class="w-2 h-2 rounded-full bg-yellow-400"></span>
+                                <span class="w-2 h-2 rounded-full bg-green-400"></span>
+                            </div>
+                        </div>
+                        
+                        <div id="gen-output" class="p-10 flex-1 flex flex-col items-center justify-center">
+                            <i data-lucide="cpu" class="w-16 h-16 text-slate-800 mb-6 animate-pulse"></i>
+                            <p class="text-slate-600 text-center font-medium">Ready for transmission.<br />Provide parameters to initiate.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Scheduler -->
+    <template id="tmpl-scheduler">
+        <div class="max-w-6xl mx-auto space-y-10 animate-in slide-in-from-right-10 duration-700">
+            <header>
+                <h3 class="text-4xl font-display font-extrabold text-white mb-2">Propulsion Queue</h3>
+                <p class="text-slate-500">Scheduled transmissions awaiting departure.</p>
+            </header>
+
+            <div class="glass border border-white/5 rounded-[2.5rem] overflow-hidden shadow-2xl">
+                <div class="p-8 border-b border-white/5 bg-white/5 flex justify-between items-center">
+                    <div class="flex items-center gap-4">
+                        <i data-lucide="calendar" class="text-secondary"></i>
+                        <span class="text-xl font-bold text-white">Upcoming Events</span>
+                    </div>
+                </div>
+                
+                <div id="schedule-list" class="divide-y divide-white/5">
+                    <!-- Cards injected -->
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Campaign -->
+    <template id="tmpl-campaign">
+        <div class="max-w-4xl mx-auto animate-in slide-in-from-bottom-10 duration-700">
+            <header class="mb-12">
+                <h3 class="text-4xl font-display font-extrabold text-white mb-3">Define Your Mission</h3>
+                <p class="text-slate-500">Configure your campaign parameters for the Nebula Engine.</p>
+            </header>
+
+            <div class="glass p-10 rounded-[2.5rem] border border-white/10 shadow-2xl">
+                <form onsubmit="handleCreateCampaign(event)" class="space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Mission Name</label>
+                            <input type="text" id="camp-name" required class="input-premium" placeholder="e.g. Summer Viral 2026">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Core Platform</label>
+                            <select id="camp-platform" class="input-premium bg-dark cursor-pointer">
+                                <option>Twitter</option>
+                                <option>LinkedIn</option>
+                                <option>Instagram</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Primary Objective</label>
+                        <textarea id="camp-goals" required class="input-premium h-32" placeholder="What do you want to achieve with this mission?"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-premium w-full py-5 text-lg font-bold">
+                        <i data-lucide="crosshair" class="w-5 h-5 mr-3"></i> Initialize Mission
+                    </button>
+                </form>
+            </div>
+        </div>
+    </template>
+
+    <!-- Analytics -->
+    <template id="tmpl-analytics">
+        <div class="animate-in fade-in duration-1000">
+            <header class="mb-12">
+                <h3 class="text-4xl font-display font-extrabold text-white mb-3">Deep Intelligence</h3>
+                <p class="text-slate-500">Neural analysis of your cross-platform performance.</p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="glass p-8 rounded-3xl border border-white/5">
+                    <p class="text-xs font-bold text-slate-500 uppercase mb-2">Total Impressions</p>
+                    <h4 class="text-4xl font-display font-bold text-white tracking-tighter">1.2M</h4>
+                </div>
+                <div class="glass p-8 rounded-3xl border border-white/5">
+                    <p class="text-xs font-bold text-slate-500 uppercase mb-2">Conversion Node</p>
+                    <h4 class="text-4xl font-display font-bold text-secondary tracking-tighter">8.4%</h4>
+                </div>
+                <div class="glass p-8 rounded-3xl border border-white/5">
+                    <p class="text-xs font-bold text-slate-500 uppercase mb-2">Network Reach</p>
+                    <h4 class="text-4xl font-display font-bold text-accent tracking-tighter">+42k</h4>
+                </div>
+            </div>
+
+            <div class="glass p-10 rounded-[3rem] border border-white/10 h-[500px]">
+                <canvas id="analyticsChartFull"></canvas>
+            </div>
+        </div>
+    </template>
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => lucide.createIcons());
+    </script>
+</body>
+</html>
